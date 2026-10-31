@@ -92,7 +92,7 @@ if not df.empty:
     col_chart1, col_chart2 = st.columns(2)
 
     with col_chart1:
-        st.subheader("📈 Xu hướng MRR & Churn Rate")
+        st.subheader("Xu hướng MRR, Churn Rate")
         df['signup_date'] = pd.to_datetime(df['signup_date'])
         df['month_year'] = df['signup_date'].dt.to_period('M').astype(str)
         
@@ -104,7 +104,6 @@ if not df.empty:
         
         df_trend['churn_rate'] = (df_trend['churned_customers'] / df_trend['total_customers']) * 100
         
-        # Ép kiểu dữ liệu để tránh lỗi Plotly
         df_trend['monthly_revenue'] = pd.to_numeric(df_trend['monthly_revenue'], errors='coerce').fillna(0)
         df_trend['churn_rate'] = pd.to_numeric(df_trend['churn_rate'], errors='coerce').fillna(0)
         
@@ -122,7 +121,7 @@ if not df.empty:
         st.plotly_chart(fig_line, use_container_width=True)
 
     with col_chart2:
-        st.subheader("🔥 Token Tiêu Thụ vs. Chi Phí API")
+        st.subheader("Token Tiêu Thụ vs Chi Phí API")
         fig_scatter = px.scatter(
             df, 
             x='tokens', 
@@ -137,7 +136,7 @@ if not df.empty:
     col_chart3, col_chart4 = st.columns(2)
 
     with col_chart3:
-        st.subheader("⚠️ Lý do Hủy Dịch Vụ (Churn Reason)")
+        st.subheader("Lý do Hủy Dịch Vụ")
         df_churn_reason = run_query("""
             SELECT churn_reason, COUNT(*) as count 
             FROM Subscriptions 
@@ -156,7 +155,7 @@ if not df.empty:
         st.plotly_chart(fig_bar_churn, use_container_width=True)
 
     with col_chart4:
-        st.subheader("🏢 Phân bố Rủi ro Churn theo Quy mô")
+        st.subheader("Phân bố rủi ro Churn theo quy mô")
         df_size_churn = df.groupby(['company_size', 'status']).size().reset_index(name='count')
         fig_bar_group = px.bar(
             df_size_churn, 
